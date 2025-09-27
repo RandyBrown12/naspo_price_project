@@ -1,0 +1,146 @@
+{% load static %}
+{% load page_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NASPO Information</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/app.js' %}" defer></script>
+</head>
+<body>
+    <div class="page__container">
+        <header>
+            <h1 class="header__title">NASPO Information</h1>
+        </header>
+        <form class="search-form" method="get">
+            <fieldset class="search-form__fieldset">
+                <legend class="search-form__legend">Search NASPO Information</legend>
+                <div class="search-form__group">
+                    <label class="search-form__label" for="vendor_name">Vendor Name:</label>
+                    <input class="search-form__input" type="text" id="vendor_name" name="vendor_name" value="{{ request.GET.vendor_name|default_if_none:'' }}">
+                </div>
+                <div class="search-form__group">
+                    <label class="search-form__label" for="description">Description:</label>
+                    <input class="search-form__input" type="text" id="description" name="description" value="{{ request.GET.description|default_if_none:'' }}">
+                </div>
+                <div class="search-form__group">
+                    <label class="search-form__label" for="manufacturer_part_number">Manufacturer Part No.:</label>
+                    <input class="search-form__input" type="text" id="manufacturer_part_number" name="manufacturer_part_number" value="{{ request.GET.manufacturer_part_number|default_if_none:'' }}">
+                </div>
+                <div class="search-form__group">
+                    <label class="search-form__label" for="list_price">List Price:</label>
+                    <input class="search-form__input" type="text" id="list_price" name="list_price" value="{{ request.GET.list_price|default_if_none:'' }}">
+                </div>
+                <div class="search-form__group">
+                    <label class="search-form__label" for="naspo_price">NASPO Price:</label>
+                    <input class="search-form__input" type="text" id="naspo_price" name="naspo_price" value="{{ request.GET.naspo_price|default_if_none:'' }}">
+                </div>
+                <div class="search-form__actions">
+                    <button class="search-form__button" type="submit">Search</button>
+                </div>
+            </fieldset>
+        </form>
+        <div class="pagination">
+            <label for="page_input"> Go to Page: </label>
+            <input type="number" id="page_input" name="page" min="1" max="{{ naspo_items.paginator.num_pages }}" 
+                    value="{{ naspo_items.number }}" placeholder="Page #" class="pagination__input">
+            <button onclick="updateURLByPageSearch()" class="pagination__button"> Submit </button>
+            <div class="pagination__info">
+                <span>Page {{ naspo_items.number }} of {{ naspo_items.paginator.num_pages }}</span>
+                <span>({{ naspo_items.start_index }}-{{ naspo_items.end_index }} of {{ naspo_items.paginator.count }} items)</span>
+            </div>
+        </div>
+        <section>
+            <table class="table">
+                <thead>
+                    <tr class="table__row">
+                        <th class="table__cell table__cell--header">Vendor Name</th>
+                        <th class="table__cell table__cell--header">Description</th>
+                        <th class="table__cell table__cell--header">Manufacturer Part Number</th>
+                        <th class="table__cell table__cell--header">List Price</th>
+                        <th class="table__cell table__cell--header">NASPO Price</th>
+                    </tr>
+                    <tr class="table__row">
+                        <th class="table__cell table__cell--header">
+                            <div class="table__header-controls">
+                                <button class="filter__button" title="Sort Vendor Name">
+                                    <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
+                                </button>
+                                <div class="table__sort-arrows">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                </div>
+                            </div>
+                        </th>
+                        <th class="table__cell table__cell--header">
+                            <div class="table__header-controls">
+                                <button class="filter__button" title="Sort Description">
+                                    <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
+                                </button>
+                                <div class="table__sort-arrows">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                </div>
+                            </div>
+                        </th>
+                        <th class="table__cell table__cell--header">
+                            <div class="table__header-controls">
+                                <button class="filter__button" title="Sort Manufacturer Part Number">
+                                    <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
+                                </button>
+                                <div class="table__sort-arrows">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                </div>
+                            </div>
+                        </th>
+                        <th class="table__cell table__cell--header">
+                            <div class="table__header-controls">
+                                <button class="filter__button" title="Sort List Price">
+                                    <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
+                                </button>
+                                <div class="table__sort-arrows">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                </div>
+                            </div>
+                        </th>
+                        <th class="table__cell table__cell--header">
+                            <div class="table__header-controls">
+                                <button class="filter__button" title="Sort NASPO Price">
+                                    <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
+                                </button>
+                                <div class="table__sort-arrows">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in naspo_items %}
+                    <tr class="table__row">
+                        <td class="table__cell table__cell--data">{{ item.vendor_name }}</td>
+                        <td class="table__cell table__cell--data">{{ item.description }}</td>
+                        <td class="table__cell table__cell--data">{{ item.manufacturer_part_number }}</td>
+                        <td class="table__cell table__cell--data">{{ item.list_price }}</td>
+                        <td class="table__cell table__cell--data">{{ item.naspo_price }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr class="table__row"><td colspan="7" class="table__cell table__cell--empty">No NASPO information found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <div class="navigation__container">
+            <button onclick="updateURLByPageButton(1)" class="navigation__container-button">First</button>
+            <button onclick="updateURLByPageButton({{naspo_items.number|previous_page }})" class="navigation__container-button">Previous</button>
+            <button class="navigation__container-button"> Current Page [{{naspo_items.number}}] </button>
+            <button onclick="updateURLByPageButton({% next_page naspo_items.number naspo_items.paginator.num_pages %})" class="navigation__container-button"> Next </button>
+            <button onclick="updateURLByPageButton({{naspo_items.paginator.num_pages}})" class="navigation__container-button"> Last </button>
+        </div>
+    </div>
+</body>
+</html>

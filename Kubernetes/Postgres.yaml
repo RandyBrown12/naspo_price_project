@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - image: postgres:latest
+          name: postgres-db
+          ports:
+          - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-info-non-secret
+            - secretRef:
+                name: postgres-info-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-db-service
+spec:
+  selector:
+    app: postgres-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP

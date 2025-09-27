@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: naspo-django-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: naspo-django-app
+  template:
+    metadata:
+      labels:
+        app: naspo-django-app
+    spec:
+      containers:
+        - image: randybrown12/naspo-django-app:latest
+          name: naspo-django-app
+          ports:
+          - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: postgres-info-non-secret
+            - secretRef:
+                name: postgres-info-secret
+      initContainers:
+        - image: randybrown12/naspo-django-app:latest
+          name: naspo-django-app-loader
+          envFrom:
+            - configMapRef:
+                name: postgres-info-non-secret
+            - secretRef:
+                name: postgres-info-secret
+          args: ["excel_insertion.py"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: naspo-django-app-service
+spec:
+  selector:
+    app: naspo-django-app
+  ports:
+    - port: 80
+      targetPort: 8000
+      nodePort: 30000
+  type: NodePort

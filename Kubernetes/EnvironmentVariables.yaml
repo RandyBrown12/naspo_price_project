@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-info-non-secret
+immutable: true
+data:
+  POSTGRES_DB: excel_db
+  POSTGRES_USER: postgres
+  POSTGRES_PORT: "5432"
+  POSTGRES_HOST: postgres-db-service
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-info-secret
+type: Opaque
+immutable: true
+data:
+  POSTGRES_PASSWORD: YXBwbGUtZnJlZWRvbS0yNTEy
+  

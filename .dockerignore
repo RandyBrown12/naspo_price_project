@@ -1,0 +1,5 @@
+Kubernetes/
+.env*
+excel_insertion.ipynb
+.venv/
+migrations/*
