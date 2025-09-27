@@ -64,56 +64,56 @@
                     <tr class="table__row">
                         <th class="table__cell table__cell--header">
                             <div class="table__header-controls">
-                                <button class="filter__button" title="Sort Vendor Name">
+                                <button onclick="sortURLByName('vendor_name')" class="filter__button" title="Sort Vendor Name">
                                     <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
                                 </button>
                                 <div class="table__sort-arrows">
-                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
-                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon{% if request.GET.sort_direction == 'desc' and request.GET.sort_value == 'vendor_name' %}-faded{% endif %}" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon{% if request.GET.sort_direction == 'asc' and request.GET.sort_value == 'vendor_name' %}-faded{% endif %}" width="20">
                                 </div>
                             </div>
                         </th>
                         <th class="table__cell table__cell--header">
                             <div class="table__header-controls">
-                                <button class="filter__button" title="Sort Description">
+                                <button onclick="sortURLByName('description')" class="filter__button" title="Sort Description">
                                     <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
                                 </button>
                                 <div class="table__sort-arrows">
-                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
-                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon{% if request.GET.sort_direction == 'desc' and request.GET.sort_value == 'description' %}-faded{% endif %}" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon{% if request.GET.sort_direction == 'asc' and request.GET.sort_value == 'description' %}-faded{% endif %}" width="20">
                                 </div>
                             </div>
                         </th>
                         <th class="table__cell table__cell--header">
                             <div class="table__header-controls">
-                                <button class="filter__button" title="Sort Manufacturer Part Number">
+                                <button onclick="sortURLByName('manufacturer_part_number')" class="filter__button" title="Sort Manufacturer Part Number">
                                     <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
                                 </button>
                                 <div class="table__sort-arrows">
-                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
-                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon{% if request.GET.sort_direction == 'desc' and request.GET.sort_value == 'manufacturer_part_number' %}-faded{% endif %}" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon{% if request.GET.sort_direction == 'asc' and request.GET.sort_value == 'manufacturer_part_number' %}-faded{% endif %}" width="20">
                                 </div>
                             </div>
                         </th>
                         <th class="table__cell table__cell--header">
                             <div class="table__header-controls">
-                                <button class="filter__button" title="Sort List Price">
+                                <button onclick="sortURLByName('list_price')" class="filter__button" title="Sort List Price">
                                     <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
                                 </button>
                                 <div class="table__sort-arrows">
-                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
-                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon{% if request.GET.sort_direction == 'desc' and request.GET.sort_value == 'list_price' %}-faded{% endif %}" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon{% if request.GET.sort_direction == 'asc' and request.GET.sort_value == 'list_price' %}-faded{% endif %}" width="20">
                                 </div>
                             </div>
                         </th>
                         <th class="table__cell table__cell--header">
                             <div class="table__header-controls">
-                                <button class="filter__button" title="Sort NASPO Price">
+                                <button onclick="sortURLByName('naspo_price')" class="filter__button" title="Sort NASPO Price">
                                     <img src="{% static 'img/filter.png' %}" alt="Filter" class="filter__icon">
                                 </button>
                                 <div class="table__sort-arrows">
-                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon" width="20">
-                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon" width="20">
+                                    <img src="{% static 'img/up-arrow.png' %}" alt="Up" class="table__sort-icon{% if request.GET.sort_direction == 'desc' and request.GET.sort_value == 'naspo_price' %}-faded{% endif %}" width="20">
+                                    <img src="{% static 'img/down-arrow.png' %}" alt="Down" class="table__sort-icon{% if request.GET.sort_direction == 'asc' and request.GET.sort_value == 'naspo_price' %}-faded{% endif %}" width="20">
                                 </div>
                             </div>
                         </th>

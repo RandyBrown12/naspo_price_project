@@ -13,6 +13,21 @@ def homepage(request):
     request_description = request.GET.get('description', '')
     request_manufacturer_part_number = request.GET.get('manufacturer_part_number', '')
 
+    sort_value = request.GET.get('sort_value', '')
+    sort_direction = request.GET.get('sort_direction', '')
+    order_by = ['vendor_name','description','manufacturer_part_number']
+
+    # Acceptable sort values
+    acceptable_sort_values = ['vendor_name', 'naspo_price', 'list_price', 'description', 'manufacturer_part_number']
+
+    if sort_value in acceptable_sort_values:
+        if sort_value in ['naspo_price', 'list_price']:
+            sort_value = f'{sort_value}_numeric'
+        if sort_direction == 'asc':
+            order_by = [sort_value]
+        else:
+            order_by = [f'-{sort_value}']
+
     query = Q()
     if request_vendor_name:
         query &= Q(vendor_name__startswith=request_vendor_name)
@@ -30,7 +45,7 @@ def homepage(request):
     naspo_items = NaspoInformation.objects.annotate(
         list_price_numeric=RawSQL('list_price::numeric', []),
         naspo_price_numeric=RawSQL('naspo_price::numeric', []),
-    ).filter(query).order_by('vendor_name','description','manufacturer_part_number')
+    ).filter(query).order_by(*order_by)
     paginator = Paginator(naspo_items, 30)  # Show 30 items per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

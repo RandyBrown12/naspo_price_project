@@ -93,6 +93,15 @@
     font-weight: bold;
 }
 
+.table__sort-icon-faded {
+    font-size: 1.2em;
+    margin-left: 4px;
+    vertical-align: middle;
+    color: #2b6cb0;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
 .table__header-controls {
     display: flex;
     justify-content: center;
