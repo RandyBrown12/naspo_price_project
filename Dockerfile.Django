@@ -4,9 +4,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+    python manage.py collectstatic
 
-ENTRYPOINT ["python"]
-
-# This command will be overrun on Kubernetes to run other init containers.
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "naspo_price_project.wsgi:application", "--bind", "0.0.0.0:8000"]

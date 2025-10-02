@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import json
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -25,12 +26,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@bhmc-zdb_^1!-9&5$=h+-=n%%#^vvf!xv8x^*kdc7z7050p8='
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('STAGE', 'dev')
 
-ALLOWED_HOSTS = []
+if DEBUG == 'dev':
+    DEBUG = True
+elif DEBUG == 'prod':
+    DEBUG = False
+"""     SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True """
+    
+ALLOWED_HOSTS = json.loads(os.getenv('DJANGO_ALLOWED_HOSTS', "[]"))
 
 
 # Application definition
@@ -43,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'naspo_price_project_app',
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +137,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

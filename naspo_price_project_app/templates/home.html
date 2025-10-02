@@ -37,7 +37,7 @@
                     <input class="search-form__input" type="text" id="naspo_price" name="naspo_price" value="{{ request.GET.naspo_price|default_if_none:'' }}">
                 </div>
                 <div class="search-form__actions">
-                    <button class="search-form__button" type="submit">Search</button>
+                    <button class="search-form__button" type="submit" id="search_button">Search</button>
                 </div>
             </fieldset>
         </form>
@@ -47,8 +47,8 @@
                     value="{{ naspo_items.number }}" placeholder="Page #" class="pagination__input">
             <button onclick="updateURLByPageSearch()" class="pagination__button"> Submit </button>
             <div class="pagination__info">
-                <span>Page {{ naspo_items.number }} of {{ naspo_items.paginator.num_pages }}</span>
-                <span>({{ naspo_items.start_index }}-{{ naspo_items.end_index }} of {{ naspo_items.paginator.count }} items)</span>
+                <span id="page_information_pt_1">Page {{ naspo_items.number }} of {{ naspo_items.paginator.num_pages }}</span>
+                <span id="page_information_pt_2">({{ naspo_items.start_index }}-{{ naspo_items.end_index }} of {{ naspo_items.paginator.count }} items)</span>
             </div>
         </div>
         <section>
@@ -135,11 +135,11 @@
             </table>
         </section>
         <div class="navigation__container">
-            <button onclick="updateURLByPageButton(1)" class="navigation__container-button">First</button>
-            <button onclick="updateURLByPageButton({{naspo_items.number|previous_page }})" class="navigation__container-button">Previous</button>
-            <button class="navigation__container-button"> Current Page [{{naspo_items.number}}] </button>
-            <button onclick="updateURLByPageButton({% next_page naspo_items.number naspo_items.paginator.num_pages %})" class="navigation__container-button"> Next </button>
-            <button onclick="updateURLByPageButton({{naspo_items.paginator.num_pages}})" class="navigation__container-button"> Last </button>
+            <button id="first_page_button" onclick="updateURLByPageButton(1)" class="navigation__container-button">First</button>
+            <button id="previous_page_button" onclick="updateURLByPageButton({{naspo_items.number|previous_page }})" class="navigation__container-button">Previous</button>
+            <button id="current_page_button" class="navigation__container-button"> Current Page [{{naspo_items.number}}] </button>
+            <button id="next_page_button" onclick="updateURLByPageButton({% next_page naspo_items.number naspo_items.paginator.num_pages %})" class="navigation__container-button"> Next </button>
+            <button id="last_page_button" onclick="updateURLByPageButton({{naspo_items.paginator.num_pages}})" class="navigation__container-button"> Last </button>
         </div>
     </div>
 </body>

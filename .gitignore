@@ -1,3 +1,4 @@
 .env
 excel_insertion.ipynb
 data/NASPO_Price_Catalog_*.xlsx
+PVC/*

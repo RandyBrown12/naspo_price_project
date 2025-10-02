@@ -22,6 +22,18 @@ spec:
                 name: postgres-info-non-secret
             - secretRef:
                 name: postgres-info-secret
+            - secretRef:
+                name: frontend-secrets
+          volumeMounts:
+          - name: local-storage
+            mountPath: /app/static
+        - image: randybrown12/nginx-for-naspo-django-app:latest
+          name: nginx
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - name: local-storage
+            mountPath: /app/static
       initContainers:
         - image: randybrown12/naspo-django-app:latest
           name: naspo-django-app-loader
@@ -30,7 +42,12 @@ spec:
                 name: postgres-info-non-secret
             - secretRef:
                 name: postgres-info-secret
-          args: ["excel_insertion.py"]
+          args: ["python", "excel_insertion.py"]
+      volumes:
+      - name: local-storage
+        hostPath:
+          path: /run/desktop/mnt/host/c/Users/Randy/Desktop/Coding_Semester/EMRTS/naspo_price_project/PVC
+          type: Directory
 ---
 apiVersion: v1
 kind: Service
@@ -41,6 +58,6 @@ spec:
     app: naspo-django-app
   ports:
     - port: 80
-      targetPort: 8000
+      targetPort: 80
       nodePort: 30000
   type: NodePort

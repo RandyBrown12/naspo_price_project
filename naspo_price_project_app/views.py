@@ -3,9 +3,12 @@ from .models import NaspoInformation
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.db.models.expressions import RawSQL
+from prometheus_client import Counter
+
+URL_HOMEPAGE_PARAMETERS_TOTAL = Counter('Homepage_URL_Parameters_Total', 'Total URL Parameters', ['parameter'])
+
 
 def homepage(request):
-
     # Perform searching
     request_vendor_name = request.GET.get('vendor_name', '')
     request_naspo_price = request.GET.get('naspo_price', '')
@@ -16,6 +19,7 @@ def homepage(request):
     sort_value = request.GET.get('sort_value', '')
     sort_direction = request.GET.get('sort_direction', '')
     order_by = ['vendor_name','description','manufacturer_part_number']
+
 
     # Acceptable sort values
     acceptable_sort_values = ['vendor_name', 'naspo_price', 'list_price', 'description', 'manufacturer_part_number']
@@ -50,3 +54,14 @@ def homepage(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'home.html', {'naspo_items': page_obj, 'request': request})
+
+class PrometheusEndpointMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        for param in request.GET.keys():
+            URL_HOMEPAGE_PARAMETERS_TOTAL.labels(parameter=param).inc()
+
+        return response
