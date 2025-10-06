@@ -35,14 +35,17 @@ if DEBUG == 'dev':
     DEBUG = True
 elif DEBUG == 'prod':
     DEBUG = False
-"""     SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True """
-    
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+     
 ALLOWED_HOSTS = json.loads(os.getenv('DJANGO_ALLOWED_HOSTS', "[]"))
 
-
+APPEND_SLASH = False
 # Application definition
 
 INSTALLED_APPS = [

@@ -17,6 +17,7 @@ spec:
           name: naspo-django-app
           ports:
           - containerPort: 8000
+            name: metrics
           envFrom:
             - configMapRef:
                 name: postgres-info-non-secret
@@ -30,7 +31,8 @@ spec:
         - image: randybrown12/nginx-for-naspo-django-app:latest
           name: nginx
           ports:
-          - containerPort: 80
+          - containerPort: 443
+            name: https
           volumeMounts:
           - name: local-storage
             mountPath: /app/static
@@ -57,7 +59,7 @@ spec:
   selector:
     app: naspo-django-app
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 443
+      targetPort: 443
       nodePort: 30000
   type: NodePort

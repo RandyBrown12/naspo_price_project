@@ -5,13 +5,11 @@ docker push randybrown12/nginx-for-naspo-django-app:latest;
 
 kubectl delete -f Kubernetes/;
 kubectl apply -f Kubernetes/;
+kubectl delete -f Kubernetes/Prometheus;
+kubectl apply -f Kubernetes/Prometheus;
 
-["naspo-django-app"]
+helm install loki grafana/loki -n monitoring -f ./Kubernetes/Loki/Loki_config.yaml
 
-WyJuYXNwby1kamFuZ28tYXBwIl0=
+helm install alloy grafana/alloy -f ./Kubernetes/Loki/Alloy_config.yaml -n monitoring
 
-["localhost"]
-
-WyJsb2NhbGhvc3QiXQ==
-
-gunicorn naspo_price_project.wsgi:application --bind 0.0.0.0:8000
+curl -H "Authorization: Bearer test_token_123" https://naspo-django-app-service.default.svc.cluster.local:443/metrics -k -v

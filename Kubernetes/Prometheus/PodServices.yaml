@@ -4,7 +4,7 @@ metadata:
   name: django-app-monitor
   namespace: monitoring
   labels:
-    release: kube-prometheus-stack-1759266157
+    release: kube-prometheus-stack-1759426471
 spec:
   namespaceSelector:
     matchNames:
@@ -13,6 +13,13 @@ spec:
     matchLabels:
       app: naspo-django-app
   podMetricsEndpoints:
-  - port: "8000"
+  - port: https
     path: /metrics
     interval: 10s
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
+    authorization:
+      credentials:
+        name: bearer-token
+        key: token
